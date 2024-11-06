@@ -223,7 +223,7 @@
               $menuSpecificClass = "widget-$j-menuFixed";
             }
 
-            include(SMFB_PLUGIN_PATH.'public/templates/menus/'.esc_attr($menuStyle).'.php');
+            include(SMFB_PLUGIN_PATH.'public/templates/menus/'.$menuStyle.'.php');
             
           }
 
