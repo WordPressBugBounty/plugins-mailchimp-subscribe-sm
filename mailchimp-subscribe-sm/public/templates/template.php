@@ -222,8 +222,8 @@ include('header.php');
 $popUpEntranceAnimation = '';
 $popUpExitAnimation = 'SlideOutUp';
 if (isset($campaignPlacement['popUpEntranceAnimation'])) {
-  $popUpEntranceAnimation = $campaignPlacement['popUpEntranceAnimation'];
-  $popUpExitAnimation = $campaignPlacement['popUpExitAnimation'];
+  $popUpEntranceAnimation = esc_attr($campaignPlacement['popUpEntranceAnimation']);
+  $popUpExitAnimation = esc_attr($campaignPlacement['popUpExitAnimation']);
 }
 
 

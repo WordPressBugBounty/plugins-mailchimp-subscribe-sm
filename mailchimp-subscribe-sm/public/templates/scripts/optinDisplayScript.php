@@ -45,7 +45,7 @@
 
                 function showPopUp(){
 
-                    $('#POPB-modal-overlay_<?php echo($this_popup_unique_Id); ?>').addClass(' animated  <?php echo($popUpEntranceAnimation); ?>');
+                    $('#POPB-modal-overlay_<?php echo($this_popup_unique_Id); ?>').addClass(' animated  <?php echo esc_attr($popUpEntranceAnimation); ?>');
                     $('#POPB-modal-overlay_<?php echo($this_popup_unique_Id); ?>').css('display','block');
 
                     if(thisOptinType_<?php echo "$this_popup_unique_Id" ?> == 'PopUp'){

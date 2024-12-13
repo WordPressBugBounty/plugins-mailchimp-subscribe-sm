@@ -727,12 +727,12 @@ function ulpb_template_popup_shortcode($atts, $content){
 			
 		), $atts ) );
 
-	$template_id = $template_id;
+	$template_id = esc_attr($template_id);
 	$showFormOn  =  'all';
-	$popupDisplayDelay = $delay;
-	$popupDisplayOnScroll = $onscroll;
-	$popupDisplayOnExit = $onexit;
-	$popupDisplayOnClick = $onclick;
+	$popupDisplayDelay = esc_attr($delay);
+	$popupDisplayOnScroll = esc_attr($onscroll);
+	$popupDisplayOnExit = esc_attr($onexit);
+	$popupDisplayOnClick = esc_attr($onclick);
 	
 	
 	$isShortCodeTemplate = true;
