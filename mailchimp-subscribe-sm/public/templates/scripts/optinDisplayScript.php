@@ -126,7 +126,7 @@
                       });
                   }
                   if (popUpDisplayActionType == 'onclick') {
-                    var onclickElId = '<?php echo "$popupDisplayOnClick"; ?>';
+                    var onclickElId = '<?php echo esc_attr("$popupDisplayOnClick"); ?>';
 
                     $('#'+onclickElId).on('click', function(){
                       showPopUp();
@@ -142,7 +142,7 @@
 
                 $(document).ready(function(){
                   if (popUpDisplayActionType == 'onclick') {
-                      var onclickElId = '<?php echo "$popupDisplayOnClick"; ?>';
+                      var onclickElId = '<?php echo esc_attr("$popupDisplayOnClick"); ?>';
                       if (onclickElId != '') {
                         $('#'+onclickElId).on('click', function(){
                           showPopUp();

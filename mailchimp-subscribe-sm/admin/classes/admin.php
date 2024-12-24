@@ -693,7 +693,7 @@ function smfb_template_shortcode($atts, $content){
 			'template_id' => '',
 		), $atts ) );
 
-	$template_id = $template_id;
+	$template_id = esc_attr($template_id);
 	$showFormOn  =  'all';
 	
 	
@@ -767,13 +767,13 @@ function ulpb_template_popup_flyin_shortcode($atts, $content){
 			
 		), $atts ) );
 
-	$template_id = $template_id;
+	$template_id = esc_attr($template_id);
 	$showFormOn  =  'all';
-	$popupDisplayDelay = $delay;
-	$popupDisplayOnScroll = $onscroll;
-	$popupDisplayOnExit = $onexit;
-	$popupDisplayOnClick = $onclick;
-	$popupPosition = $position;
+	$popupDisplayDelay = esc_attr($delay);
+	$popupDisplayOnScroll = esc_attr($onscroll);
+	$popupDisplayOnExit = esc_attr($onexit);
+	$popupDisplayOnClick = esc_attr($onclick);
+	$popupPosition = esc_attr($position);
 
 	
 	
@@ -810,13 +810,13 @@ function ulpb_template_popup_bar_shortcode($atts, $content){
 			
 		), $atts ) );
 
-	$template_id = $template_id;
-	$showFormOn  =  $show_form_on;
-	$popupDisplayDelay = $delay;
-	$popupDisplayOnScroll = $onscroll;
-	$popupDisplayOnExit = $onexit;
-	$popupDisplayOnClick = $onclick;
-	$popupPosition = $position;
+	$template_id = esc_attr($template_id);
+	$showFormOn  = esc_attr($show_form_on);
+	$popupDisplayDelay = esc_attr($delay);
+	$popupDisplayOnScroll = esc_attr($onscroll);
+	$popupDisplayOnExit = esc_attr($onexit);
+	$popupDisplayOnClick = esc_attr($onclick);
+	$popupPosition = esc_attr($position);
 
 	
 	
@@ -852,12 +852,12 @@ function ulpb_template_popup_full_page_shortcode($atts, $content){
 			
 		), $atts ) );
 
-	$template_id = $template_id;
+	$template_id = esc_attr($template_id);
 	$showFormOn  =  $show_form_on;
-	$popupDisplayDelay = $delay;
-	$popupDisplayOnScroll = $onscroll;
-	$popupDisplayOnExit = $onexit;
-	$popupDisplayOnClick = $onclick;
+	$popupDisplayDelay = esc_attr($delay);
+	$popupDisplayOnScroll = esc_attr($onscroll);
+	$popupDisplayOnExit = esc_attr($onexit);
+	$popupDisplayOnClick = esc_attr($onclick);
 
 	
 	
