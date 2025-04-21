@@ -2,9 +2,9 @@
 Contributors: umarbajwa, pluginops
 Tags:  subscribe form, contact form, email,subscribe forms, marketing,contacts, form, mailchimp, MailChimp plugin
 Requires at least: 3.2
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 5.0
-Stable tag: 4.3
+Stable tag: 4.3.1
 Donate link : https://pluginops.com/page-builder/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html

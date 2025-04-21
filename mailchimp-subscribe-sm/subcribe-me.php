@@ -5,7 +5,7 @@ Description: The easy to use tool for creating highly attractive optin popups, b
 Author: PluginOps
 Plugin URI: https://pluginops.com/optin-builder/
 Author URI: https://pluginops.com/optin-builder/
-Version: 4.3
+Version: 4.3.1
 Donate link: https://pluginops.com/optin-builder/
 License: GPL V2
 */
