@@ -88,7 +88,7 @@
 			<?php foreach ( $recentEntries as $entry ): ?>
 				<div class="support-content">
 
-				<p><a target="_blank" href="<?php echo admin_url('edit.php?post_type=pluginops_forms&page=page-builder-smfb-form-submissions&selectedPostID='.$entry['post_id']) ?>"><?php echo $entry["Form_Name"] . " - " . $entry["date"] ?></a></p>
+				<p><a target="_blank" href="<?php echo esc_url( admin_url('edit.php?post_type=pluginops_forms&page=page-builder-smfb-form-submissions&selectedPostID='.$entry['post_id']) ) ?>"><?php echo esc_html( $entry["Form_Name"] . " - " . $entry["date"] ) ?></a></p>
 
 				</div>
 

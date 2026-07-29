@@ -4,6 +4,18 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 
+/**
+ * Flatten a stored submission value to a plain string before escaping.
+ * Submitted values are strings, but legacy rows may hold arrays.
+ */
+if ( ! function_exists( 'smfb_formBuilder_database_flatten_value' ) ) {
+    function smfb_formBuilder_database_flatten_value( $value ) {
+        if ( is_array( $value ) ) {
+            return implode( ', ', array_map( 'strval', $value ) );
+        }
+        return (string) $value;
+    }
+}
 
 
 
@@ -79,7 +91,7 @@ function smfb_formBuilder_database_renderFormDataTable_extension($postID){
             
             ?>
             <div class="PB_accordion_forms">
-              <?php echo "<h4>$formNameKey</h4>"; ?>
+              <?php echo "<h4>" . esc_html( $formNameKey ) . "</h4>"; ?>
               <div>
                 <h4>Total Form Submissions :  <?php echo($dataListSize+1); ?> </h4>
                 <h4 id="formSubmissionsPremiumNotice" style="display:none;">Latest 50 submissions are being shown, To view all Form Submissions please upgrade to premium plan.</h4>
@@ -91,7 +103,7 @@ function smfb_formBuilder_database_renderFormDataTable_extension($postID){
                        if ($smfb_field_name == 'defaultIndex') {
                            continue;
                        }else {
-                        echo "<th> $smfb_field_name </th>";
+                        echo "<th> " . esc_html( $smfb_field_name ) . " </th>";
                        }
                     } ?>
                   <th> Delete </th>
@@ -124,14 +136,15 @@ function smfb_formBuilder_database_renderFormDataTable_extension($postID){
                                     if ($valeKey == 'defaultIndex') {
                                         continue;
                                     }else{
-                                        echo "<td><br> $vale <br><br></td>";
+                                        $vale = smfb_formBuilder_database_flatten_value( $vale );
+                                        echo "<td><br> " . esc_html( $vale ) . " <br><br></td>";
                                     }
                                 }
                             ?>
                             
                         
                             <td>
-                                <div class="entryDeleteBtn edb-<?php echo($smfb_formBuilder_single_item['defaultIndex']); ?>" data-entryIndex="<?php echo($smfb_formBuilder_single_item['defaultIndex']); ?>" ><span class="dashicons dashicons-trash" data-entryIndex="<?php echo($smfb_formBuilder_single_item['defaultIndex']); ?>"></span></div>
+                                <div class="entryDeleteBtn edb-<?php echo esc_attr($smfb_formBuilder_single_item['defaultIndex']); ?>" data-entryIndex="<?php echo esc_attr($smfb_formBuilder_single_item['defaultIndex']); ?>" ><span class="dashicons dashicons-trash" data-entryIndex="<?php echo esc_attr($smfb_formBuilder_single_item['defaultIndex']); ?>"></span></div>
                             </td>
                                     
                                     
@@ -149,47 +162,55 @@ function smfb_formBuilder_database_renderFormDataTable_extension($postID){
                     <script type="text/javascript">
 
                             <?php
-                            $formNameKeyWithoutSpaces = str_replace(' ', '', $formNameKey);
-                            $formNameKeyWithoutSpaces = str_replace('.', '', $formNameKeyWithoutSpaces);
-                            $formNameKeyWithoutSpaces = str_replace('-', '', $formNameKeyWithoutSpaces);
-                            $formNameKeyWithoutSpaces = str_replace('+', '', $formNameKeyWithoutSpaces);
-                            
-                             echo "var allFormDataObject_$formNameKeyWithoutSpaces"; ?> = [ <?php 
-                                echo "[";
-                                    foreach ($formNameKeyEntry[0] as $key => $val) {
-                                        if ($key == 'defaultIndex') {
-                                            continue;
-                                        }else{
-                                            $key = str_replace('\'', '"', $key);
-                                            $key = str_replace('_', ' ', $key);
-                                            echo "'$key'".",";
-                                        }
-                                        
-                                    }
-                                    echo "],";
-                              foreach ($formNameKeyEntry as $formNameKeyEntryKey => $smfb_formBuilder_single_item) {
+                            // Restrict the generated JS variable name to identifier-safe characters.
+                            $formNameKeyWithoutSpaces = preg_replace( '/[^A-Za-z0-9_]/', '', $formNameKey );
+                            if ( $formNameKeyWithoutSpaces === '' ) {
+                                $formNameKeyWithoutSpaces = 'form' . $formNumberCounter;
+                            }
 
-                                    $ThisForm_Field = $smfb_formBuilder_single_item;
-                                    echo "[";
-                                    foreach ($ThisForm_Field as $key => $value) {
-                                        if ($key == 'defaultIndex') {
-                                            continue;
-                                        }else{
-                                            $value = str_replace('\'', '"', $value);
-                                            echo "'$value'".",";
-                                        }
-                                        
-                                    }
-                                    echo "],";
+                            $allFormDataRows = array();
 
-                                } ?>];
+                            $allFormDataHeaderRow = array();
+                            foreach ($formNameKeyEntry[0] as $key => $val) {
+                                if ($key == 'defaultIndex') {
+                                    continue;
+                                }else{
+                                    $key = str_replace('\'', '"', $key);
+                                    $key = str_replace('_', ' ', $key);
+                                    $allFormDataHeaderRow[] = $key;
+                                }
+                            }
+                            $allFormDataRows[] = $allFormDataHeaderRow;
+
+                            foreach ($formNameKeyEntry as $formNameKeyEntryKey => $smfb_formBuilder_single_item) {
+
+                                $ThisForm_Field = $smfb_formBuilder_single_item;
+                                $thisFormDataRow = array();
+                                foreach ($ThisForm_Field as $key => $value) {
+                                    if ($key == 'defaultIndex') {
+                                        continue;
+                                    }else{
+                                        $value = smfb_formBuilder_database_flatten_value( $value );
+                                        $value = str_replace('\'', '"', $value);
+                                        $thisFormDataRow[] = $value;
+                                    }
+                                }
+                                $allFormDataRows[] = $thisFormDataRow;
+
+                            }
+
+                            // wp_json_encode with the HEX flags keeps the payload inert inside an inline <script>.
+                            echo 'var allFormDataObject_' . $formNameKeyWithoutSpaces . ' = '
+                                . wp_json_encode( $allFormDataRows, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT )
+                                . ';';
+                            ?>
 
                     </script>
                     <br>
                     <br>
                     <?php 
                         if (function_exists('ulpb_available_pro_widgets') ) {
-                            echo "<div class='btn-green large-btn downloadFormDatabtn' style='float:left;'  data-formID='allFormDataObject_$formNameKeyWithoutSpaces' data-formName='$formNameKey' >Download Data</div>";
+                            echo "<div class='btn-green large-btn downloadFormDatabtn' style='float:left;'  data-formID='allFormDataObject_" . esc_attr($formNameKeyWithoutSpaces) . "' data-formName='" . esc_attr($formNameKey) . "' >Download Data</div>";
                         }
                     ?>
                     
@@ -212,7 +233,7 @@ function smfb_formBuilder_database_renderFormDataTable_extension($postID){
 
         
         <form id="formBuilderDataListEmpty">
-            <input type="hidden" name="ps_ID" value="<?php echo $postID; ?>">
+            <input type="hidden" name="ps_ID" value="<?php echo esc_attr($postID); ?>">
             <div class="btn-red large-btn emptyFormDataBtn" style="max-width:150px;float: right; background: #f44336;">Delete All Data</div>
 
             <p style="margin: 25px; font-size: 25px;"></p>

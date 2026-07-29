@@ -41,7 +41,7 @@ if (!empty($ulpb_pages)) {
 			$isSelected = 'selected';
 		}
 
-		$allLandingPagePosts = $allLandingPagePosts. " <option value='". $ulpb_single_post->ID. "' $isSelected > ". get_the_title($ulpb_single_post) ." </option> ";
+		$allLandingPagePosts = $allLandingPagePosts. " <option value='". esc_attr($ulpb_single_post->ID). "' $isSelected > ". esc_html( get_the_title($ulpb_single_post) ) ." </option> ";
 	
 	}
 }
